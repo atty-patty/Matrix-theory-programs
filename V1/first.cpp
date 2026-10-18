@@ -45,6 +45,10 @@ double* backward_sub(double coefficients[],double variables[],int n,int step){
     return backward_sub(coefficients,variables,n,step-1);
 }
 
+///issues to be fixed in V2: Add support for solving the system of equation when there are infinite solutions
+//and also fixing the mess that this code is by making it more object oriented by adding a matrix and 
+//vector class
+
 int main() {
 
     int VarNum;
