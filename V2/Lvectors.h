@@ -3,10 +3,13 @@ class Vector{
 
     public:
         int size;
-        int* v;
+        float* v;
 
         Vector(int n);
 
-        void Remove();
         void Print();
+        //free up the dyanmically allocated memory
+        void Remove();
 };
+
+float Dot(Vector* a,Vector* b);
