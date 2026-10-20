@@ -13,3 +13,9 @@ class Vector{
 };
 
 float Dot(Vector* a,Vector* b);
+
+Vector* Add(Vector* a,Vector* b);
+
+Vector* Scale(Vector* a,float scale);
+
+bool IsEqual(Vector* a,Vector* b);

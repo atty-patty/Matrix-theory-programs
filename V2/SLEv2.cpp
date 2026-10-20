@@ -2,15 +2,41 @@
 #include"Lvectors.h"
 
 int main(){
-    Vector* A = new Vector(4);
-    Vector* B = new Vector(4);
+    
+    int dimA,dimB;
+    std::cout << "enter the dimension of first vector\n";
+    std::cin >> dimA;
 
-    A->v[1] = 3;
-    A->v[3] = -1.1;
+    Vector* a = new Vector(dimA);
 
-    B->v[1] = -1.3;
+    std::cout << "enter the dimension of second vector\n";
+    std::cin >> dimB;
 
-    std::cout << Dot(A,B);
+    Vector* b = new Vector(dimB);
 
-    A->Remove();
+    std::cout << "enter the first vector(values seprated by spaces on one line)\n";
+    for(int i = 0;i < dimA;i++){
+        std::cin >> a->v[i];
+    }
+    std::cout << "enter the second vector(values seprated by spaces on one line)\n";
+    for(int i = 0;i < dimB;i++){
+        std::cin >> b->v[i];
+    }
+
+    Vector* c = Add(Scale(a,2),Scale(b,-1));
+    Vector* d = Add(a,b);
+
+    if(c == nullptr || d == nullptr){
+        return 1;
+    }
+    if(IsEqual(c,d)){
+        std::cout << "2a-b is equal to a+b\n";
+    }else{
+        std::cout << "it ain't chat simple as that\n";
+    }
+
+    a->Remove();
+    b->Remove();
+    c->Remove();
+    d->Remove();
 }
