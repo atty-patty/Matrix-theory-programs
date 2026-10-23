@@ -7,6 +7,12 @@ Vector::Vector(int n){
     v = (float*)calloc(n,sizeof(float));
 }
 
+void Vector::takeInput(){
+    for(int i = 0;i < size;i++){
+        std::cin >> v[i];
+    }
+}
+
 void Vector::Remove(){
     free(v);
     v = nullptr;

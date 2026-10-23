@@ -7,6 +7,7 @@ class Vector{
 
         Vector(int n);
 
+        void takeInput();
         void Print();
         //free up the dyanmically allocated memory
         void Remove();

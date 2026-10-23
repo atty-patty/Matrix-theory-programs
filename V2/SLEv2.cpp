@@ -15,13 +15,9 @@ int main(){
     Vector* b = new Vector(dimB);
 
     std::cout << "enter the first vector(values seprated by spaces on one line)\n";
-    for(int i = 0;i < dimA;i++){
-        std::cin >> a->v[i];
-    }
+    a->takeInput();
     std::cout << "enter the second vector(values seprated by spaces on one line)\n";
-    for(int i = 0;i < dimB;i++){
-        std::cin >> b->v[i];
-    }
+    b->takeInput();
 
     Vector* c = Add(Scale(a,2),Scale(b,-1));
     Vector* d = Add(a,b);
