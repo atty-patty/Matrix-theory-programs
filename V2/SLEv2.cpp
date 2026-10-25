@@ -1,25 +1,23 @@
 #include<iostream>
 #include"Lvectors.h"
+#include"Matrices.h"
 
 int main(){
     
-    int dimA,dimB;
-    std::cout << "enter the dimension of first vector\n";
-    std::cin >> dimA;
+    int ColA,RowA,dim;
+    std::cout << "enter the rows and columns of A: ";
+    std::cin >> RowA >> ColA;
+    std::cout << "enter the size of vector x: ";
+    std::cin >> dim;
 
-    std::cout << "enter the dimension of second vector\n";
-    std::cin >> dimB;
+    Matrix A(RowA,ColA);
+    Vector v(dim);
 
-    Vector a(dimA);
-    Vector b(dimB);
+    std::cout << "Enter the Matrix\n";
+    A.TakeInput();
+    std::cout << "Enter the Vector\n";
+    v.takeInput();
+    Vector b = MVProduct(A,v);
 
-    std::cout << "enter the first vector(values seprated by spaces on one line)\n";
-    a.takeInput();
-    std::cout << "enter the second vector(values seprated by spaces on one line)\n";
-    b.takeInput();
-
-    Vector d = Add(a,b);
-    Vector c = Add(d,a);
-
-    d.Print();
+    b.Print();
 }

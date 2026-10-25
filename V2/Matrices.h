@@ -1,3 +1,5 @@
+#include"Lvectors.h"
+
 #pragma once
 class Matrix{
 
@@ -12,6 +14,7 @@ class Matrix{
         Matrix(const Matrix& other);
 
         void TakeInput();
+        void Print();
 
         //destructor
         ~Matrix();
@@ -19,3 +22,6 @@ class Matrix{
 
 Matrix Add(const Matrix& A,const Matrix& B);
 Matrix Scale(const Matrix& A,float scale);
+
+Matrix MatrixProduct(const Matrix& A,const Matrix& B);
+Vector MVProduct(const Matrix& A,const Vector& v);
