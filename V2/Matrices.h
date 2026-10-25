@@ -6,7 +6,16 @@ class Matrix{
         int NumRow;
         int NumCol;
 
+        //constructor
         Matrix(int m,int n);
+        //for copying
+        Matrix(const Matrix& other);
 
-        void Remove();
+        void TakeInput();
+
+        //destructor
+        ~Matrix();
 };
+
+Matrix Add(const Matrix& A,const Matrix& B);
+Matrix Scale(const Matrix& A,float scale);

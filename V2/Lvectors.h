@@ -5,18 +5,21 @@ class Vector{
         int size;
         float* v;
 
+        //for creating vector from scratch
         Vector(int n);
+        //for copying a vector properly
+        Vector(const Vector& other);
 
         void takeInput();
         void Print();
-        //free up the dyanmically allocated memory
-        void Remove();
+        //destructor
+        ~Vector();
 };
 
 float Dot(Vector* a,Vector* b);
 
-Vector* Add(Vector* a,Vector* b);
+Vector Add(const Vector& a,const Vector& b);
 
-Vector* Scale(Vector* a,float scale);
+Vector Scale(const Vector& a,float scale);
 
-bool IsEqual(Vector* a,Vector* b);
+bool IsEqual(const Vector& a,const Vector& b);
