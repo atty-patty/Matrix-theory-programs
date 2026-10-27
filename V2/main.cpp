@@ -15,5 +15,7 @@ int main(){
 
     Matrix U = Elimination(A);
 
-    U.PrintNice();
+    U.PrintAugmented();
+    RREF(U);
+    U.PrintAugmented();
 }

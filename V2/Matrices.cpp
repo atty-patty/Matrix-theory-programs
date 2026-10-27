@@ -3,6 +3,7 @@
 #include<stdlib.h>
 #include<iostream>
 
+//CONSTRUCTOER DESTRUCTOR
 Matrix::Matrix(int m,int n){
     NumRow = m;
     NumCol = n;
@@ -41,6 +42,7 @@ Matrix::~Matrix(){
     a= nullptr;
 }
 
+//INPUT OUTPUT
 void Matrix::TakeInput(){
     for(int i = 0;i < NumRow;i++){
         for(int j = 0;j < NumCol;j++){
@@ -60,6 +62,7 @@ void Matrix::Print(){
 
 void Matrix::PrintNice(){
 
+    std::cout << "\n";
     for(int i = 0;i < NumRow;i++){
         std::cout << "|";
         for(int j = 0;j < NumCol;j++){
@@ -70,6 +73,21 @@ void Matrix::PrintNice(){
     }
 }
 
+void Matrix::PrintAugmented(){
+    std::cout << "\n";
+    for(int i = 0;i < NumRow;i++){
+        std::cout << "|";
+        for(int j = 0;j < NumCol;j++){
+            if(j == NumCol -1)
+                printf("|");
+            printf("%3g ",a[i][j]);
+        }
+        std::cout << "|";
+        std::cout << "\n";
+    }
+}
+
+//SWAPPING ROW STUFF
 void Matrix::SwapRows(int row1,int row2){
     if(row1 > NumRow || row2 > NumRow){
         std::cout << "ERROR: invalid rows entered to be swapped\n";
@@ -103,6 +121,24 @@ bool Matrix::SwapWithNonZero(int startRow,int colIndex){
     return CanSwap;
 }
 
+//Equality checking
+bool IsEqual(const Matrix& A,const Matrix& B){
+    if(A.NumCol != B.NumCol || B.NumRow != A.NumRow){
+        printf("ERROR: Cannot check for equality of diffrent dimension matrix\n");
+        return false;
+    }
+    for(int i = 0 ;i < A.NumRow;i++){
+        for(int j = 0;j < A.NumCol;j++){
+            if(A.a[i][j] != B.a[i][j]){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+
+//BASIC OPERATIONS
 Matrix Add(const Matrix& A,const Matrix& B){
 
     if(A.NumCol == 0 || B.NumCol == 0 || A.NumRow == 0 || B.NumRow == 0){
@@ -144,6 +180,19 @@ Matrix Scale(const Matrix& A,float scale){
     return C;
 }
 
+Matrix Transpose(const Matrix& A){
+    Matrix At(A.NumCol,A.NumRow);
+
+    for(int i = 0;i < A.NumRow;i++){
+        for(int j = 0;j < A.NumCol;j++){
+            At.a[j][i] = A.a[i][j];
+        }
+    }
+    return At;
+}
+
+
+//Product of Matrices and vectore
 Matrix MatrixProduct(const Matrix& A,const Matrix& B){
     if(A.NumCol == 0 || B.NumCol == 0){
         std::cout << "ERROR:one of the matrix is undefined\n";
@@ -195,17 +244,7 @@ Vector MVProduct(const Matrix& A,const Vector& v){
     return b;
 }
 
-Matrix Transpose(const Matrix& A){
-    Matrix At(A.NumCol,A.NumRow);
-
-    for(int i = 0;i < A.NumRow;i++){
-        for(int j = 0;j < A.NumCol;j++){
-            At.a[j][i] = A.a[i][j];
-        }
-    }
-    return At;
-}
-
+//ELIMINATION STUFF
 Matrix Elimination(Matrix& A){
     Matrix U = A;
     //gonna store the coeff for row transformations
@@ -213,25 +252,76 @@ Matrix Elimination(Matrix& A){
     //gonna store the current pivot column and row;
     int PivotColumn = 1;
     int PivotRow = 1;
+
+    //gonna store the rank of matrix too using this function
+    int rank = 0;
+
     while (PivotColumn <= U.NumCol && PivotRow < U.NumRow){
         //if pivot entry is close to 0,we gotta trySwapping it
         if(U.a[PivotRow-1][PivotColumn-1] < 0.001f && U.a[PivotRow-1][PivotColumn-1] > -0.001f){
-            //if we can't swap it,append PivotColumn by 1 and try again
+            //if we can't swap it,so we know this not a pivot column so go next one and try again
             if(!U.SwapWithNonZero(PivotRow,PivotColumn)){
                 PivotColumn++;
             }
             continue;
         }
+        //if have valid pivot then go through all rows below pivot
         for(int i = PivotRow+1;i <= U.NumRow;i++){
+            //find the value of lambda
             lambda = (U.a[i-1][PivotColumn-1])/(U.a[PivotRow-1][PivotColumn-1]);
+            //do Ri = Ri - lambda*Rp
             U.a[i-1][PivotColumn-1] = 0;
             for(int j = PivotColumn+1;j <= U.NumCol;j++){
                 U.a[i-1][j-1] -= lambda*U.a[PivotRow-1][j-1];
             }
         }
+        //the next pivot at closest is 1 diagnol below,also incrememnt rank by 1
+        rank++;
         PivotColumn++;
         PivotRow++;
     }
-
+    //something extra we need to add because we skip the loop when we reach last row
+    if(PivotRow == U.NumRow){
+        for(int i = PivotColumn - 1;i < U.NumCol;i++){
+            if (U.a[PivotRow-1][i] != 0){
+                rank++;
+                break;
+            }
+        }
+    }
+    A.rank = rank;
+    U.rank = rank;
     return U;
+}
+
+void RREF(Matrix& U){
+
+    int PivotIndex[U.rank] = {0};
+    for(int i = 0;i < U.rank;i++){
+        while (U.a[i][PivotIndex[i]] == 0)
+        {
+            PivotIndex[i]++;
+        }
+        if(i != U.rank-1)
+            PivotIndex[i+1] = PivotIndex[i]+1;
+    }
+    //go through the list backward and remove the componenet above the pivots
+    for(int i = U.rank-1;i >= 0;i--){
+        //first divide by value if pivot column to get 1 there
+        for(int j = PivotIndex[i]+1;j < U.NumCol;j++){
+            U.a[i][j] /= U.a[i][PivotIndex[i]];
+        }
+        U.a[i][PivotIndex[i]] = 1;
+
+        //then we need to remove all the element above it,ig
+        for(int j = 0;j < i;j++){
+            int lambda = U.a[j][PivotIndex[i]];
+            //do  Ri = Ri - Rp
+            U.a[j][PivotIndex[i]] = 0;
+            for(int k = PivotIndex[i]+1;k < U.NumCol;k++){
+                U.a[j][k] -= lambda*U.a[i][k];
+            }
+        }
+    }
+
 }

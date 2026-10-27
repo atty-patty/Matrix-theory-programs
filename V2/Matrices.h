@@ -8,6 +8,8 @@ class Matrix{
         int NumRow;
         int NumCol;
 
+        int rank;
+
         //constructor
         Matrix(int m,int n);
         //for copying
@@ -16,12 +18,15 @@ class Matrix{
         void TakeInput();
         void Print();
         void PrintNice();
+        void PrintAugmented();
 
         void SwapRows(int row1,int row2);
         bool SwapWithNonZero(int startRow,int colIndex);
         //destructor
         ~Matrix();
 };
+
+bool IsEqual(const Matrix& A,const Matrix& B);
 
 Matrix Add(const Matrix& A,const Matrix& B);
 Matrix Scale(const Matrix& A,float scale);
@@ -31,3 +36,4 @@ Matrix MatrixProduct(const Matrix& A,const Matrix& B);
 Vector MVProduct(const Matrix& A,const Vector& v);
 
 Matrix Elimination(Matrix& A);
+void RREF(Matrix& U);
