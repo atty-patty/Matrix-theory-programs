@@ -58,6 +58,51 @@ void Matrix::Print(){
     }
 }
 
+void Matrix::PrintNice(){
+
+    for(int i = 0;i < NumRow;i++){
+        std::cout << "|";
+        for(int j = 0;j < NumCol;j++){
+            printf("%3g ",a[i][j]);
+        }
+        std::cout << "|";
+        std::cout << "\n";
+    }
+}
+
+void Matrix::SwapRows(int row1,int row2){
+    if(row1 > NumRow || row2 > NumRow){
+        std::cout << "ERROR: invalid rows entered to be swapped\n";
+        return;
+    }
+
+    if(row1 == row2){
+        std::cout << "WARNING:trying to swap a row with itself\n";
+    }
+    //done so we can have the parameter be numbered like  we do in matrices
+    //starting from one,but since array need starting from 0,we subtract 1;
+    row1--;
+    row2--;
+    float temp;
+    for(int i = 0;i < NumCol;i++){
+        temp = a[row1][i];
+        a[row1][i] = a[row2][i];
+        a[row2][i] = temp;
+    }
+}
+
+bool Matrix::SwapWithNonZero(int startRow,int colIndex){
+    bool CanSwap = false;
+    for(int i = startRow+1;i <= NumRow;i++){
+        if(a[i-1][colIndex-1] != 0){
+            CanSwap = true;
+            SwapRows(startRow,i);
+            break;
+        }
+    }
+    return CanSwap;
+}
+
 Matrix Add(const Matrix& A,const Matrix& B){
 
     if(A.NumCol == 0 || B.NumCol == 0 || A.NumRow == 0 || B.NumRow == 0){
@@ -148,4 +193,21 @@ Vector MVProduct(const Matrix& A,const Vector& v){
     }
 
     return b;
+}
+
+Matrix Transpose(const Matrix& A){
+    Matrix At(A.NumCol,A.NumRow);
+
+    for(int i = 0;i < A.NumRow;i++){
+        for(int j = 0;j < A.NumCol;j++){
+            At.a[j][i] = A.a[i][j];
+        }
+    }
+    return At;
+}
+
+Matrix Elimination(Matrix& A){
+    Matrix U = A;
+    int lambda;
+    
 }
