@@ -13,7 +13,7 @@ int main(){
     std::cout << "Enter A\n";
     A.TakeInput();
 
-    Matrix B = Transpose(A);
+    Matrix U = Elimination(A);
 
-    B.PrintNice();
+    U.PrintNice();
 }

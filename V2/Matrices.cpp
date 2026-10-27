@@ -208,6 +208,30 @@ Matrix Transpose(const Matrix& A){
 
 Matrix Elimination(Matrix& A){
     Matrix U = A;
+    //gonna store the coeff for row transformations
     int lambda;
-    
+    //gonna store the current pivot column and row;
+    int PivotColumn = 1;
+    int PivotRow = 1;
+    while (PivotColumn <= U.NumCol && PivotRow < U.NumRow){
+        //if pivot entry is close to 0,we gotta trySwapping it
+        if(U.a[PivotRow-1][PivotColumn-1] < 0.001f && U.a[PivotRow-1][PivotColumn-1] > -0.001f){
+            //if we can't swap it,append PivotColumn by 1 and try again
+            if(!U.SwapWithNonZero(PivotRow,PivotColumn)){
+                PivotColumn++;
+            }
+            continue;
+        }
+        for(int i = PivotRow+1;i <= U.NumRow;i++){
+            lambda = (U.a[i-1][PivotColumn-1])/(U.a[PivotRow-1][PivotColumn-1]);
+            U.a[i-1][PivotColumn-1] = 0;
+            for(int j = PivotColumn+1;j <= U.NumCol;j++){
+                U.a[i-1][j-1] -= lambda*U.a[PivotRow-1][j-1];
+            }
+        }
+        PivotColumn++;
+        PivotRow++;
+    }
+
+    return U;
 }
