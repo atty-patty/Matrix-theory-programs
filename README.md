@@ -15,4 +15,10 @@ in it so far
 
 2. Have a Matrix Class which has ability of
     -create a matrix with specified rows and columns with dynamic memory allocation
+    -Adding of 2 Matrices
+    -Scaling of a matrix by a scalar
+    -taking transpose of a matrix
+    -doing Matrix Vector and Matrix Matrix multiplication
+    -doing Elimination to Reduce to upper triangular
+    -converting it to A RREF 
     -properly remove that matrix from dynamic memory
