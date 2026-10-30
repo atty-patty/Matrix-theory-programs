@@ -1,24 +1,27 @@
 # Matrix-theory-programs
 This contains programs to implement the algorithms that we learn in our Matrix Theory course
 
-So far I have Implemented a v1 which can find the solutions only when there is a unique solution
-and also the code leaves a lot to be desired.
-Currently working on a v2 of this where first of i am creating Classes for Vectors and Matrices to make it easier to work with.
-in it so far
-1. Have a vector class which has ability of 
-    -create a vector of any dimension using dynamic memory allocation
-    -Adding 2 vectors
-    -scaling a vector by a scalar
-    -taking dot product of 2 vectors
-    -checking if 2 vectors are equal
-    -properly remove that vector from dynamic memory
+# Current Features
+Currently working on a v2 of this where first of i am creating Classes for Vectors,Matrices ,Subspaces to make it easier to work with.in it so far  
+<h4>Have a vector class which has ability of:</h4>
+	-Create a vector of any dimension using dynamic memory allocation
+	-Adding 2 vectors<br>
+	-scaling a vector by a scalar<br> 
+	-taking dot product of 2 vectors<br>
+	-checking if 2 vectors are equal<br>
+	-properly remove that vector from dynamic memory<br> 
 
-2. Have a Matrix Class which has ability of
-    -create a matrix with specified rows and columns with dynamic memory allocation
-    -Adding of 2 Matrices
-    -Scaling of a matrix by a scalar
-    -taking transpose of a matrix
-    -doing Matrix Vector and Matrix Matrix multiplication
-    -doing Elimination to Reduce to upper triangular
-    -converting it to A RREF 
-    -properly remove that matrix from dynamic memory
+<h4>Have a Matrix Class which has ability of</h4>
+    -create a matrix with specified rows and columns with dynamic memory allocation<br>
+    -Adding of 2 Matrices<br>
+    -Scaling of a matrix by a scalar<br>
+    -taking transpose of a matrix<br>
+    -doing Matrix Vector and Matrix Matrix multiplication<br>
+    -doing Elimination to Reduce to upper triangular<br>
+    -converting it to A RREF<br>
+    -properly remove that matrix from heap<br><br>
+<h4> Have a Subspace class which has ability to:</h4>
+	-Create a Subspace having specified dimensions and vector size using dynamic memory allocation<br>
+	-Find the NullSpace of a given Matrix<br>
+	-Print the subspace in a reasonable way<br>
+	-properly remove it from heap<br>
