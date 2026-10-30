@@ -63,7 +63,8 @@ Vector::~Vector(){
 void Vector::Print(){
 
     for(int i = 0;i < size;i++){
-        std::cout << v[i];
+        //i don't like seeing -0,so this a way to remove it  ;
+        std::cout << v[i]+0.0;
         if(i != size - 1){
             std::cout << " ";
         }

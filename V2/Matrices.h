@@ -4,7 +4,7 @@
 class Matrix{
 
     public:
-        float** a;
+        double** a;
         int NumRow;
         int NumCol;
 

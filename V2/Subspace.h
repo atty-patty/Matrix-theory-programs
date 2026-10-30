@@ -1,5 +1,6 @@
 #pragma once
 #include"Lvectors.h"
+#include"Matrices.h"
 
 class Subspace{
     public:
@@ -13,3 +14,5 @@ class Subspace{
 
         void PrintSubspace();
 };
+
+Subspace NullSpace(const Matrix& R);

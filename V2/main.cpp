@@ -9,13 +9,15 @@ int main(){
     std::cout << "enter the rows and columns of A: ";
     std::cin >> RowA >> ColA;
 
-    Subspace CA = Subspace(ColA,RowA);
-    Vector V(RowA);
-    std::cout << "Enter the vectors that are basis of subspace:\n";
-    for(int i = 0;i < ColA;i++){
-        V.takeInput();
-        CA.Basis[i] = V;
-    }
-    CA.PrintSubspace();
-    
+    Matrix A(RowA,ColA);
+    std::cout <<  "enter A:\n";
+    A.TakeInput();
+
+    Matrix R = Elimination(A);
+    R.PrintNice();
+    RREF(R);
+    R.PrintNice();
+    Subspace nullSpace = NullSpace(R);
+
+    nullSpace.PrintSubspace();
 }

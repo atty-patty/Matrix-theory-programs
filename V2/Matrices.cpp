@@ -8,9 +8,9 @@ Matrix::Matrix(int m,int n){
     NumRow = m;
     NumCol = n;
 
-    a = (float**)calloc(m,sizeof(float*));
+    a = (double**)calloc(m,sizeof(double*));
     for(int i = 0;i < m;i++){
-        a[i] = (float*)calloc(n,sizeof(float));
+        a[i] = (double*)calloc(n,sizeof(double));
     }
 }
 
@@ -23,10 +23,10 @@ Matrix::Matrix(const Matrix& other){
         return;
     }
 
-    a = (float**)calloc(NumRow,sizeof(float*));
+    a = (double**)calloc(NumRow,sizeof(double*));
 
     for(int i = 0;i < NumRow;i++){
-        a[i] = (float*)calloc(NumCol,sizeof(float));
+        a[i] = (double*)calloc(NumCol,sizeof(double));
         for(int j = 0;j < NumCol;j++){
             a[i][j] = other.a[i][j];
         }
@@ -112,7 +112,7 @@ void Matrix::SwapRows(int row1,int row2){
 bool Matrix::SwapWithNonZero(int startRow,int colIndex){
     bool CanSwap = false;
     for(int i = startRow+1;i <= NumRow;i++){
-        if(a[i-1][colIndex-1] != 0){
+        if(a[i-1][colIndex-1] > 0.001f || a[i-1][colIndex-1] < -0.001f){
             CanSwap = true;
             SwapRows(startRow,i);
             break;
@@ -248,7 +248,7 @@ Vector MVProduct(const Matrix& A,const Vector& v){
 Matrix Elimination(Matrix& A){
     Matrix U = A;
     //gonna store the coeff for row transformations
-    int lambda;
+    double lambda;
     //gonna store the current pivot column and row;
     int PivotColumn = 1;
     int PivotRow = 1;
@@ -273,6 +273,9 @@ Matrix Elimination(Matrix& A){
             U.a[i-1][PivotColumn-1] = 0;
             for(int j = PivotColumn+1;j <= U.NumCol;j++){
                 U.a[i-1][j-1] -= lambda*U.a[PivotRow-1][j-1];
+                if(U.a[i-1][j-1] < 1e-10 && U.a[i-1][j-1] > -1e-10){
+                    U.a[i-1][j-1] = 0;
+                }
             }
         }
         //the next pivot at closest is 1 diagnol below,also incrememnt rank by 1
@@ -283,7 +286,7 @@ Matrix Elimination(Matrix& A){
     //something extra we need to add because we skip the loop when we reach last row
     if(PivotRow == U.NumRow){
         for(int i = PivotColumn - 1;i < U.NumCol;i++){
-            if (U.a[PivotRow-1][i] != 0){
+            if (U.a[PivotRow-1][i] > 0.001f || U.a[PivotRow-1][i] < -0.001f){
                 rank++;
                 break;
             }
@@ -315,11 +318,14 @@ void RREF(Matrix& U){
 
         //then we need to remove all the element above it,ig
         for(int j = 0;j < i;j++){
-            int lambda = U.a[j][PivotIndex[i]];
+            double lambda = U.a[j][PivotIndex[i]];
             //do  Ri = Ri - Rp
             U.a[j][PivotIndex[i]] = 0;
             for(int k = PivotIndex[i]+1;k < U.NumCol;k++){
                 U.a[j][k] -= lambda*U.a[i][k];
+                if(U.a[j][k] < 1e-10 && U.a[j][k] > -1e-10){
+                    U.a[j][k] = 0;
+                }
             }
         }
     }
