@@ -1,4 +1,5 @@
 #include<new>
+#include <iostream>
 #include "Subspace.h"
 #include "Lvectors.h"
 #include <stdlib.h>
@@ -28,4 +29,15 @@ Subspace::~Subspace(){
         Basis[i].~Vector();
     }
     free(Basis);
+}
+
+void Subspace::PrintSubspace(){
+    for(int i = 1;i <= spaceDim;i++){
+        std::cout << "C" << i << "[";
+        Basis[i-1].Print();
+        std::cout << "]";
+        if(i != spaceDim){
+            std::cout << " + ";
+        }
+    }
 }

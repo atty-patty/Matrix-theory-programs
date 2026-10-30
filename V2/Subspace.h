@@ -10,4 +10,6 @@ class Subspace{
         Subspace(int dimension,int VectorDimension);
         Subspace(const Subspace& other);
         ~Subspace();
+
+        void PrintSubspace();
 };

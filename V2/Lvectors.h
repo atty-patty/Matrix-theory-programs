@@ -10,6 +10,8 @@ class Vector{
         //for copying a vector properly
         Vector(const Vector& other);
 
+        Vector& operator=(const Vector& other);
+
         void takeInput();
         void Print();
         //destructor

@@ -26,6 +26,29 @@ Vector::Vector(const Vector& other){
     }
 }
 
+Vector& Vector::operator=(const Vector& other) {
+    if (this == &other) {
+        return *this;
+    }
+
+    float* newData = nullptr;
+
+    if (other.size > 0) {
+        newData = new float[other.size];
+
+        for (int i = 0; i < other.size; i++) {
+            newData[i] = other.v[i];
+        }
+    }
+
+    free(v);
+
+    v = newData;
+    size = other.size;
+
+    return *this;
+}
+
 void Vector::takeInput(){
     for(int i = 0;i < size;i++){
         std::cin >> v[i];
@@ -40,7 +63,10 @@ Vector::~Vector(){
 void Vector::Print(){
 
     for(int i = 0;i < size;i++){
-        std::cout << v[i] << " ";
+        std::cout << v[i];
+        if(i != size - 1){
+            std::cout << " ";
+        }
     }
 }
 
