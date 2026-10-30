@@ -7,6 +7,7 @@
 Matrix::Matrix(int m,int n){
     NumRow = m;
     NumCol = n;
+    rank = 0;
 
     a = (double**)calloc(m,sizeof(double*));
     for(int i = 0;i < m;i++){
@@ -17,6 +18,7 @@ Matrix::Matrix(int m,int n){
 Matrix::Matrix(const Matrix& other){
     NumRow = other.NumRow;
     NumCol = other.NumCol;
+    rank = other.rank;
 
     if(NumCol == 0 || NumRow == 0){
         a = nullptr;
@@ -40,6 +42,38 @@ Matrix::~Matrix(){
     }
     free(a);
     a= nullptr;
+}
+
+Matrix& Matrix::operator=(const Matrix& other){
+    if (this == &other) {
+        return *this;
+    }
+
+    double** newData = nullptr;
+
+    newData = (double**)calloc(other.NumRow,sizeof(double*));
+
+    for (int i = 0; i < other.NumRow; i++) {
+        newData[i] = (double*)calloc(other.NumCol,sizeof(double));
+    }
+
+    for(int i = 0;i < other.NumRow;i++){
+        for(int j = 0;j < other.NumCol;j++){
+            newData[i][j] = other.a[i][j];
+        }
+    }
+
+    for(int i = 0;i < other.NumRow;i++){
+        free(a[i]);
+    }
+    free(a);
+
+    a = newData;
+    NumCol = other.NumCol;
+    NumRow = other.NumRow;
+    rank = other.rank;
+
+    return *this;
 }
 
 //INPUT OUTPUT
@@ -191,7 +225,6 @@ Matrix Transpose(const Matrix& A){
     return At;
 }
 
-
 //Product of Matrices and vectore
 Matrix MatrixProduct(const Matrix& A,const Matrix& B){
     if(A.NumCol == 0 || B.NumCol == 0){
@@ -256,7 +289,8 @@ Matrix Elimination(Matrix& A){
     //gonna store the rank of matrix too using this function
     int rank = 0;
 
-    while (PivotColumn <= U.NumCol && PivotRow < U.NumRow){
+    while (PivotColumn <= U.NumCol && PivotRow <= U.NumRow){
+        //std::cout << "you should only run twice";
         //if pivot entry is close to 0,we gotta trySwapping it
         if(U.a[PivotRow-1][PivotColumn-1] < 0.001f && U.a[PivotRow-1][PivotColumn-1] > -0.001f){
             //if we can't swap it,so we know this not a pivot column so go next one and try again
@@ -284,14 +318,14 @@ Matrix Elimination(Matrix& A){
         PivotRow++;
     }
     //something extra we need to add because we skip the loop when we reach last row
-    if(PivotRow == U.NumRow){
+    /*if(PivotRow == U.NumRow){
         for(int i = PivotColumn - 1;i < U.NumCol;i++){
             if (U.a[PivotRow-1][i] > 0.001f || U.a[PivotRow-1][i] < -0.001f){
                 rank++;
                 break;
             }
         }
-    }
+    }*/
     A.rank = rank;
     U.rank = rank;
     return U;
@@ -330,4 +364,61 @@ void RREF(Matrix& U){
         }
     }
 
+}
+
+Matrix RemoveRHS(const Matrix& A){
+    Matrix suba(A.NumRow,A.NumCol-1);
+    suba.rank = A.rank;
+    for(int i = 0;i< A.NumCol-1;i++){
+        for(int j = 0;j < A.NumRow;j++){
+            suba.a[j][i] = A.a[j][i];
+        }
+    }
+    return suba;
+}
+
+Vector GetRHS(const Matrix& Ab){
+    Vector b(Ab.NumRow);
+    for(int i = 0;i < b.size;i++){
+        b.v[i] = Ab.a[i][Ab.NumCol-1];
+    }
+    return b;
+}
+
+Matrix JoinRHS(const Matrix& A,const Vector& b){
+    Matrix Ab(A.NumRow,A.NumCol + 1);
+
+    for(int i = 0 ;i < A.NumRow;i++){
+        for(int j = 0;j < A.NumCol;j++){
+            Ab.a[i][j] = A.a[i][j];
+        }
+    }
+
+    for(int i = 0;i < A.NumRow;i++){
+        Ab.a[i][A.NumCol] = b.v[i];
+    }
+    return Ab;
+}
+
+Vector GetParticularSolution(const Matrix& Rb){
+    int PivotIndex[Rb.rank] = {0};
+    for(int i = 0;i < Rb.rank;i++){
+        while (Rb.a[i][PivotIndex[i]] == 0)
+        {
+            PivotIndex[i]++;
+        }
+        if(i != Rb.rank-1)
+            PivotIndex[i+1] = PivotIndex[i]+1;
+    }
+    Vector Xp(Rb.NumCol-1);
+    int currentPivot=0;
+    for(int i = 0;i < Xp.size;i++){
+        if(PivotIndex[currentPivot] == i){
+            Xp.v[i] = Rb.a[currentPivot][Rb.NumCol-1];
+            currentPivot++;
+        }else{
+            Xp.v[i] = 0;
+        }
+    }
+    return Xp;
 }

@@ -33,9 +33,8 @@ Subspace::~Subspace(){
 
 void Subspace::PrintSubspace(){
     for(int i = 1;i <= spaceDim;i++){
-        std::cout << "C" << i << "[";
+        std::cout << "C" << i;
         Basis[i-1].Print();
-        std::cout << "]";
         if(i != spaceDim){
             std::cout << " + ";
         }

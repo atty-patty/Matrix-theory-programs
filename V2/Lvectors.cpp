@@ -9,7 +9,7 @@ Vector::Vector(int n){
         v = nullptr;
         return;
     }
-    v = (float*)calloc(n,sizeof(float));
+    v = (double*)calloc(n,sizeof(double));
 }
 
 Vector::Vector(const Vector& other){
@@ -20,7 +20,7 @@ Vector::Vector(const Vector& other){
         return;
     }
 
-    v = (float*)calloc(size,sizeof(float));
+    v = (double*)calloc(size,sizeof(double));
     for(int i = 0;i < size;i++){
         v[i] = other.v[i];
     }
@@ -31,10 +31,10 @@ Vector& Vector::operator=(const Vector& other) {
         return *this;
     }
 
-    float* newData = nullptr;
+    double* newData = nullptr;
 
     if (other.size > 0) {
-        newData = new float[other.size];
+        newData = (double*)calloc(other.size,sizeof(double));
 
         for (int i = 0; i < other.size; i++) {
             newData[i] = other.v[i];
@@ -62,6 +62,7 @@ Vector::~Vector(){
 
 void Vector::Print(){
 
+    std::cout << "[";
     for(int i = 0;i < size;i++){
         //i don't like seeing -0,so this a way to remove it  ;
         std::cout << v[i]+0.0;
@@ -69,6 +70,7 @@ void Vector::Print(){
             std::cout << " ";
         }
     }
+    std::cout << "]";
 }
 
 float Dot(const Vector& a,const Vector& b){

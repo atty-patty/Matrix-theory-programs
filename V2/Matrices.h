@@ -15,6 +15,8 @@ class Matrix{
         //for copying
         Matrix(const Matrix& other);
 
+        Matrix& operator=(const Matrix& other);
+
         void TakeInput();
         void Print();
         void PrintNice();
@@ -37,3 +39,8 @@ Vector MVProduct(const Matrix& A,const Vector& v);
 
 Matrix Elimination(Matrix& A);
 void RREF(Matrix& U);
+
+Matrix RemoveRHS(const Matrix& A);
+Vector GetRHS(const Matrix& Ab);
+Matrix JoinRHS(const Matrix& A,const Vector& b);
+Vector GetParticularSolution(const Matrix& Rb);

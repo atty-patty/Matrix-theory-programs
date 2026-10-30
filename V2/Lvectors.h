@@ -3,7 +3,7 @@ class Vector{
 
     public:
         int size;
-        float* v;
+        double* v;
 
         //for creating vector from scratch
         Vector(int n);
